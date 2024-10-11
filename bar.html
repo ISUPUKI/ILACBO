@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .progress, .members, .time {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        #progressFill {
+            height: 20px;
+            background: #76c7c0;
+            width: 0;
+        }
+        
+        .payment-form input {
+            padding: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .payment-form button {
+            padding: 10px 20px;
+            border: none;
+            background: #76c7c0;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .payment-form button:hover {
+            background: #64b0aa;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Donation Tracker</h1>
+        <div class="progress">
+            <p>Target Amount: $<span id="targetAmount">500000</span></p>
+            <p>Already Raised: $<span id="raisedAmount">1000</span></p>
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+        </div>
+        <div class="members">
+            <p>Target Members: <span id="targetMembers">2500</span></p>
+            <p>Already Paid Members: <span id="paidMembers">8</span></p>
+        </div>
+        <div class="time">
+            <p>Days Remaining: <span id="daysRemaining">10</span></p>
+        </div>
+        <div class="payment-form">
+            <input type="number" id="paymentAmount" placeholder="Enter payment amount">
+            <input type="text" id="phoneNumber" placeholder="Enter phone number">
+            <button onclick="makePayment()">Pay</button>
+        </div>
+    </div>
+    <script>
+        let targetAmount = 500000;
+        let raisedAmount = 1000;
+        let targetMembers = 2500;
+        let paidMembers = 8;
+        let daysRemaining = 10;
+
+        function updateUI() {
+            document.getElementById('raisedAmount').innerText = raisedAmount;
+            document.getElementById('paidMembers').innerText = paidMembers;
+            document.getElementById('daysRemaining').innerText = daysRemaining;
+
+            let progressPercent = (raisedAmount / targetAmount) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+        }
+
+        function makePayment() {
+            let paymentAmount = parseFloat(document.getElementById('paymentAmount').value);
+            let phoneNumber = document.getElementById('phoneNumber').value;
+
+            if (!isNaN(paymentAmount) && paymentAmount > 0 && phoneNumber) {
+                // Simulate M-Pesa PIN based on the phone number (this is a simple simulation)
+                let mpesaPin = phoneNumber.slice(-4);  // Get the last 4 digits of the phone number
+                alert("Processing payment of $" + paymentAmount + " with M-Pesa PIN " + mpesaPin);
+                
+                // Simulate successful payment
+                raisedAmount += paymentAmount;
+                paidMembers += 1;
+                updateUI();
+            } else {
+                alert("Please enter a valid payment amount and phone number.");
+            }
+        }
+
+        function decreaseDays() {
+            if (daysRemaining > 0) {
+                daysRemaining -= 1;
+                updateUI();
+            }
+        }
+
+        // Decrease days remaining every 24 hours
+        setInterval(decreaseDays, 24 * 60 * 60 * 1000);
+
+        updateUI();
+    </script>
+</body>
+</html>
